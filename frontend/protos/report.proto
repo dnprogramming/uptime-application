@@ -1,0 +1,51 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "backend.Protos";
+
+import "google/protobuf/timestamp.proto";
+
+service Report {
+  rpc AddApplication(AddApplicationRequest) returns (AddApplicationResponse);
+  rpc UpdateApplication(UpdateApplicationRequest) returns (UpdateApplicationResponse);
+  rpc GetApplications(GetApplicationsRequest) returns (stream GetApplicationsResponse);
+  rpc GetApplication(GetApplicationRequest) returns (GetApplicationResponse);
+}
+
+message AddApplicationRequest {
+  string appname = 1;
+  string responsiblepersonname = 2;
+}
+
+message AddApplicationResponse {
+  bool success = 1;
+}
+
+message UpdateApplicationRequest {
+  int32 appid = 1;
+  string appname = 2;
+  string responsiblepersonname = 3;
+  int32 appstatus = 4;
+}
+
+message UpdateApplicationResponse {
+  bool success = 1;
+}
+
+message GetApplicationsRequest {}
+message GetApplicationRequest {
+  int32 appid = 1;
+}
+
+message GetApplicationsResponse {
+  repeated ApplicationInformation apps = 1;
+}
+message GetApplicationResponse {
+  ApplicationInformation app = 1;
+}
+message ApplicationInformation {
+  int32 appid = 1;
+  string appname = 2;
+  string responsiblepersonname = 3;
+  int32 appstatus = 4;
+  google.protobuf.Timestamp lastupdated = 5;
+}

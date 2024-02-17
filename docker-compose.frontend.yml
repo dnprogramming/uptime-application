@@ -1,0 +1,30 @@
+---
+version: '3'
+
+services:
+  proxy:
+    build: 
+      context: ./proxy
+      dockerfile: Dockerfile
+    image: proxy
+    container_name: proxy
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+      - api-network
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: frontend
+    container_name: frontend
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+      - proxy
+    networks:
+      - app-network

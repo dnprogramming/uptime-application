@@ -1,0 +1,70 @@
+---
+version: '3'
+
+services:  
+  db:
+    platform: linux/x86_64
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 1433:1433
+    environment:
+      MSSQL_SA_PASSWORD: DevCharlie4
+      ACCEPT_EULA: "Y"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S . -U sa -P DevCharlie4"]
+      interval: 1s
+      timeout: 5s
+      retries: 120
+    restart: always
+    networks:
+      - db-network
+  
+  flyway:
+    image: flyway/flyway
+    command: migrate -url="jdbc:sqlserver://db;databaseName=master;encrypt=false;trustServerCertificate=true" -user="sa" -password="DevCharlie4" -mixed=true -placeholders.database_user_password="Test2Alpha212!" -placeholders.asymmetric_password="Test2Alpha1234!" -placeholders.master_key_password="U#IEVx95zX7nXhKvJn6"
+    volumes:
+      - ./sql:/flyway/sql
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - db-network
+
+  redis:
+    image: redis:latest
+    command: redis-server
+    restart: always
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
+      - REDIS_PASSWORD=Romeo1Sierra@Zulu
+      - REDIS_AOF_ENABLED=no
+    volumes:
+      - redis:/var/lib/redis
+      - redis-config:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - db-network
+
+  sec-redis:
+    image: redis:latest
+    command: redis-server --port 10500
+    restart: always
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
+      - REDIS_PASSWORD=LimaOmaha34#
+      - REDIS_AOF_ENABLED=no
+    volumes:
+      - sec-redis:/var/lib/redis
+      - sec-redis-config:/usr/local/etc/redis/redis.conf
+    ports:
+      - 10500:10500
+    networks:
+      - security-network

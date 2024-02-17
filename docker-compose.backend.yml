@@ -1,0 +1,37 @@
+---
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SpPassKey=Test2Alpha1234!
+      - RedisHostName=redis
+      - RedisPortNumber=6379
+      - RedisPassword=Romeo1Sierra@Zulu
+      - SecuredRedisHostName=sec-redis
+      - SecuredRedisPortNumber=10500
+      - SecuredRedisPassword=LimaOmaha34#
+      - SQLServerHostname=db
+      - SQLServerDatabase=uptimereports
+      - SQLUserName=App_Runner_Account
+      - SQLPassword=Test2Alpha212!
+    ports:
+      - 9080:8080
+    image: backend
+    container_name: backend
+    restart: always
+    volumes:
+      - backendlog:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - api-network
+      - db-network
+      - security-network
