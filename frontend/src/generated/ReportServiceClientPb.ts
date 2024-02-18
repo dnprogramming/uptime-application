@@ -1,5 +1,5 @@
 /**
- * @fileoverview gRPC-Web generated client stub for 
+ * @fileoverview gRPC-Web generated client stub for
  * @enhanceable
  * @public
  */
@@ -10,7 +10,6 @@
 // 	protoc              v3.20.3
 // source: report.proto
 
-
 /* eslint-disable */
 // @ts-nocheck
 
@@ -18,6 +17,7 @@
 import * as grpcWeb from 'grpc-web';
 
 import * as report_pb from './report_pb'; // proto import: "report.proto"
+import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb'; // proto import: "google/protobuf/empty.proto"
 
 
 export class ReportClient {
@@ -31,7 +31,7 @@ export class ReportClient {
                options?: null | { [index: string]: any; }) {
     if (!options) options = {};
     if (!credentials) credentials = {};
-    options['format'] = 'text';
+    options['format'] = 'binary';
 
     this.client_ = new grpcWeb.GrpcWebClientBase(options);
     this.hostname_ = hostname.replace(/\/+$/, '');
@@ -127,24 +127,45 @@ export class ReportClient {
 
   methodDescriptorGetApplications = new grpcWeb.MethodDescriptor(
     '/Report/GetApplications',
-    grpcWeb.MethodType.SERVER_STREAMING,
-    report_pb.GetApplicationsRequest,
+    grpcWeb.MethodType.UNARY,
+    google_protobuf_empty_pb.Empty,
     report_pb.GetApplicationsResponse,
-    (request: report_pb.GetApplicationsRequest) => {
+    (request: google_protobuf_empty_pb.Empty) => {
       return request.serializeBinary();
     },
     report_pb.GetApplicationsResponse.deserializeBinary
   );
 
   getApplications(
-    request: report_pb.GetApplicationsRequest,
-    metadata?: grpcWeb.Metadata): grpcWeb.ClientReadableStream<report_pb.GetApplicationsResponse> {
-    return this.client_.serverStreaming(
-      this.hostname_ +
-        '/Report/GetApplications',
-      request,
-      metadata || {},
-      this.methodDescriptorGetApplications);
+    request: google_protobuf_empty_pb.Empty,
+    metadata?: grpcWeb.Metadata | null): Promise<report_pb.GetApplicationsResponse>;
+
+  getApplications(
+    request: google_protobuf_empty_pb.Empty,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: report_pb.GetApplicationsResponse) => void): grpcWeb.ClientReadableStream<report_pb.GetApplicationsResponse>;
+
+  getApplications(
+    request: google_protobuf_empty_pb.Empty,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: report_pb.GetApplicationsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/Report/GetApplications',
+        request,
+        metadata || {},
+        this.methodDescriptorGetApplications,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/Report/GetApplications',
+    request,
+    metadata || {},
+    this.methodDescriptorGetApplications);
   }
 
   methodDescriptorGetApplication = new grpcWeb.MethodDescriptor(

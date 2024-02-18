@@ -233,7 +233,7 @@ public class ProcessingReport : IProcessingReport
         return response;
 	}
 
-	private async Task<GetApplicationsResponse> GettingApplications(GetApplicationsRequest request)
+	private async Task<GetApplicationsResponse> GettingApplications()
 	{
         List<ApplicationInformation> Applications = await GetApplicationsEncryptedForApi();
         GetApplicationsResponse response = new();
@@ -256,8 +256,8 @@ public class ProcessingReport : IProcessingReport
 		return await GettingApplication(request);
 	}
 
-	public async Task<GetApplicationsResponse> GetApplications(GetApplicationsRequest request)
+	public async Task<GetApplicationsResponse> GetApplications()
 	{
-		return await GettingApplications(request);
+		return await GettingApplications();
 	}
 }

@@ -1,19 +1,16 @@
-import React from "react";
-import { styled } from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { ApplicationInformation } from '../../generated/report_pb';
+import {ApplicationInformation} from '../../generated/report_pb';
 
-const ApplicationCard = ({ app }: { app: ApplicationInformation}) => {
-  const appId = app.getAppid();
+const AppCard = styled.div`
+  display: flex;
+  background: #ff0000;
+`;
+
+function ApplicationCard({app}: {app: ApplicationInformation}) {
   const appName = app.getAppname();
-  const appStatus = app.getAppstatus();
-  const responsiblePerson = app.getResponsiblepersonname();
-  const lastUpdated = app.getLastupdated();
-  return (
-    <div>
-      "Hi"
-    </div>
-  );
-};
+  return <AppCard>{appName}</AppCard>;
+}
 
 export default ApplicationCard;

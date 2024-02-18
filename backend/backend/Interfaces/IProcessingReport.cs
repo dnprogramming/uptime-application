@@ -8,5 +8,5 @@ public interface IProcessingReport
 
     Task<GetApplicationResponse> GetApplication(GetApplicationRequest request);
 
-    Task<GetApplicationsResponse> GetApplications(GetApplicationsRequest request);
+    Task<GetApplicationsResponse> GetApplications();
 }

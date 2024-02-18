@@ -14,27 +14,23 @@ public class ReportService : Report.ReportBase
         _report = report;
     }
 
-    public override Task<AddApplicationResponse> AddApplication(AddApplicationRequest request, ServerCallContext context)
+    public override async Task<AddApplicationResponse> AddApplication(AddApplicationRequest request, ServerCallContext context)
     {
-        return Task.FromResult(_report.AddApplication(request).Result);
+        return await _report.AddApplication(request);
     }
 
-    public override Task<UpdateApplicationResponse> UpdateApplication(UpdateApplicationRequest request, ServerCallContext context)
+    public override async Task<UpdateApplicationResponse> UpdateApplication(UpdateApplicationRequest request, ServerCallContext context)
     {
-        return Task.FromResult(_report.UpdateApplication(request).Result);
+        return await _report.UpdateApplication(request);
     }
 
-    public override Task<GetApplicationResponse> GetApplication(GetApplicationRequest request, ServerCallContext context)
+    public override async Task<GetApplicationResponse> GetApplication(GetApplicationRequest request, ServerCallContext context)
     {
-        return Task.FromResult(_report.GetApplication(request).Result);
+        return await _report.GetApplication(request);
     }
 
-    public override async Task GetApplications(GetApplicationsRequest request, IServerStreamWriter<GetApplicationsResponse> responseStream, ServerCallContext context)
+    public override async Task<GetApplicationsResponse> GetApplications(Empty request, ServerCallContext context)
     {
-        while (!context.CancellationToken.IsCancellationRequested)
-        {
-            await responseStream.WriteAsync(await _report.GetApplications(request));
-            await Task.Delay(TimeSpan.FromMilliseconds(200));
-        }
+        return await _report.GetApplications();
     }
 }

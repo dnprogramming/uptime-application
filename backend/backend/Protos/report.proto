@@ -3,11 +3,12 @@
 option csharp_namespace = "backend.Protos";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 service Report {
   rpc AddApplication(AddApplicationRequest) returns (AddApplicationResponse);
   rpc UpdateApplication(UpdateApplicationRequest) returns (UpdateApplicationResponse);
-  rpc GetApplications(GetApplicationsRequest) returns (stream GetApplicationsResponse);
+  rpc GetApplications(google.protobuf.Empty) returns (GetApplicationsResponse);
   rpc GetApplication(GetApplicationRequest) returns (GetApplicationResponse);
 }
 
