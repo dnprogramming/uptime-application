@@ -72,12 +72,7 @@ public class ProcessingReport : IProcessingReport
                     };
                     applications.Add(app);
                 }
-                var applicationsData = await GetApplicationsEncryptedForCacheUpdate();
-                _cache.Remove(cacheKey);
-                var jsonString = JsonConvert.SerializeObject(applicationsData);
-                var byteArray = Encoding.UTF8.GetBytes(jsonString);
-                _cacheOptions.SetAbsoluteExpiration(DateTimeOffset.Now.AddDays(7));
-                _cache.Set(cacheKey, byteArray, _cacheOptions);
+                CacheUpdate();
             }
         }
         catch (Exception ex)
@@ -87,7 +82,7 @@ public class ProcessingReport : IProcessingReport
         return applications;
     }
 
-    private async Task<List<ApplicationInformation>> GetApplicationsEncryptedForCacheUpdate()
+    private async Task CacheUpdate()
     {
         List<ApplicationInformation> applications = new();
         try
@@ -105,12 +100,16 @@ public class ProcessingReport : IProcessingReport
                 };
                 applications.Add(app);
             }
+            _cache.Remove(cacheKey);
+            var jsonString = JsonConvert.SerializeObject(applications);
+            var byteArray = Encoding.UTF8.GetBytes(jsonString);
+            _cacheOptions.SetAbsoluteExpiration(DateTimeOffset.Now.AddDays(7));
+            _cache.Set(cacheKey, byteArray, _cacheOptions);
         }
         catch (Exception ex)
         {
             _logger.LogError("A Error has occurred in GetApplications Encrypted Cache: ", ex.Message);
         }
-        return applications;
     }
     private async Task<bool> InsertApplicationEncrypted(AddApplicationRequest request)
     {
@@ -126,23 +125,6 @@ public class ProcessingReport : IProcessingReport
             };
             await _db.Appstatuses.AddAsync(appstatus);
             await _db.SaveChangesAsync();
-
-            var applicationsData = await GetApplicationsEncryptedForCacheUpdate();
-            var updated = _db.Appstatuses.Where(e => e.Id == appstatus.Id).Select(e => e.Lastupdated).FirstOrDefault().ToUniversalTime();
-            ApplicationInformation applicationInformation = new()
-            {
-                Appid = appstatus.Id,
-                Appname = appname,
-                Appstatus = 0,
-                Responsiblepersonname = responsiblename,
-                Lastupdated = Timestamp.FromDateTime(updated)
-            };
-            applicationsData.Add(applicationInformation);
-            _cache.Remove(cacheKey);
-            var jsonString = JsonConvert.SerializeObject(applicationsData);
-            var byteArray = Encoding.UTF8.GetBytes(jsonString);
-            _cacheOptions.SetAbsoluteExpiration(DateTimeOffset.Now.AddDays(7));
-            _cache.Set(cacheKey, byteArray, _cacheOptions);
             success = true;
         }
         catch (Exception ex)
@@ -166,13 +148,6 @@ public class ProcessingReport : IProcessingReport
             currentRecord.Lastupdated = DateTime.Now;
             _db.Appstatuses.Update(currentRecord);
             await _db.SaveChangesAsync();
-
-            var applicationsData = await GetApplicationsEncryptedForCacheUpdate();
-            _cache.Remove(cacheKey);
-            var jsonString = JsonConvert.SerializeObject(applicationsData);
-            var byteArray = Encoding.UTF8.GetBytes(jsonString);
-            _cacheOptions.SetAbsoluteExpiration(DateTimeOffset.Now.AddDays(7));
-            _cache.Set(cacheKey, byteArray, _cacheOptions);
             success = true;
         }
         catch (Exception ex)
@@ -193,6 +168,7 @@ public class ProcessingReport : IProcessingReport
             if (string.IsNullOrWhiteSpace(request.Appname) || string.IsNullOrWhiteSpace(request.Responsiblepersonname))
                 return response;
             response.Success = await InsertApplicationEncrypted(request);
+            CacheUpdate();
         }
         catch (Exception ex)
         {
