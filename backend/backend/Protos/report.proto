@@ -15,6 +15,7 @@ service Report {
 message AddApplicationRequest {
   string appname = 1;
   string responsiblepersonname = 2;
+  int32 criticalityid = 3;
 }
 
 message AddApplicationResponse {
@@ -26,6 +27,7 @@ message UpdateApplicationRequest {
   string appname = 2;
   string responsiblepersonname = 3;
   int32 appstatus = 4;
+  int32 criticalityid = 5;
 }
 
 message UpdateApplicationResponse {
@@ -48,5 +50,7 @@ message ApplicationInformation {
   string appname = 2;
   string responsiblepersonname = 3;
   int32 appstatus = 4;
-  google.protobuf.Timestamp lastupdated = 5;
+  int32 criticalityid = 5;
+  string criticalitylevel = 6;
+  google.protobuf.Timestamp lastupdated = 7;
 }

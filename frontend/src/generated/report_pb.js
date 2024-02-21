@@ -250,7 +250,8 @@ proto.AddApplicationRequest.prototype.toObject = function(opt_includeInstance) {
 proto.AddApplicationRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     appname: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    responsiblepersonname: jspb.Message.getFieldWithDefault(msg, 2, "")
+    responsiblepersonname: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    criticalityid: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -295,6 +296,10 @@ proto.AddApplicationRequest.deserializeBinaryFromReader = function(msg, reader) 
       var value = /** @type {string} */ (reader.readString());
       msg.setResponsiblepersonname(value);
       break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setCriticalityid(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -338,6 +343,13 @@ proto.AddApplicationRequest.serializeBinaryToWriter = function(message, writer) 
       f
     );
   }
+  f = message.getCriticalityid();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
 };
 
 
@@ -374,6 +386,24 @@ proto.AddApplicationRequest.prototype.getResponsiblepersonname = function() {
  */
 proto.AddApplicationRequest.prototype.setResponsiblepersonname = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional int32 criticalityid = 3;
+ * @return {number}
+ */
+proto.AddApplicationRequest.prototype.getCriticalityid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.AddApplicationRequest} returns this
+ */
+proto.AddApplicationRequest.prototype.setCriticalityid = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
@@ -542,7 +572,8 @@ proto.UpdateApplicationRequest.toObject = function(includeInstance, msg) {
     appid: jspb.Message.getFieldWithDefault(msg, 1, 0),
     appname: jspb.Message.getFieldWithDefault(msg, 2, ""),
     responsiblepersonname: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    appstatus: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    appstatus: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    criticalityid: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -594,6 +625,10 @@ proto.UpdateApplicationRequest.deserializeBinaryFromReader = function(msg, reade
     case 4:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setAppstatus(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setCriticalityid(value);
       break;
     default:
       reader.skipField();
@@ -649,6 +684,13 @@ proto.UpdateApplicationRequest.serializeBinaryToWriter = function(message, write
   if (f !== 0) {
     writer.writeInt32(
       4,
+      f
+    );
+  }
+  f = message.getCriticalityid();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
       f
     );
   }
@@ -724,6 +766,24 @@ proto.UpdateApplicationRequest.prototype.getAppstatus = function() {
  */
 proto.UpdateApplicationRequest.prototype.setAppstatus = function(value) {
   return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional int32 criticalityid = 5;
+ * @return {number}
+ */
+proto.UpdateApplicationRequest.prototype.getCriticalityid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.UpdateApplicationRequest} returns this
+ */
+proto.UpdateApplicationRequest.prototype.setCriticalityid = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
 };
 
 
@@ -1435,6 +1495,8 @@ proto.ApplicationInformation.toObject = function(includeInstance, msg) {
     appname: jspb.Message.getFieldWithDefault(msg, 2, ""),
     responsiblepersonname: jspb.Message.getFieldWithDefault(msg, 3, ""),
     appstatus: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    criticalityid: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    criticalitylevel: jspb.Message.getFieldWithDefault(msg, 6, ""),
     lastupdated: (f = msg.getLastupdated()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
 
@@ -1489,6 +1551,14 @@ proto.ApplicationInformation.deserializeBinaryFromReader = function(msg, reader)
       msg.setAppstatus(value);
       break;
     case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setCriticalityid(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCriticalitylevel(value);
+      break;
+    case 7:
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setLastupdated(value);
@@ -1550,10 +1620,24 @@ proto.ApplicationInformation.serializeBinaryToWriter = function(message, writer)
       f
     );
   }
+  f = message.getCriticalityid();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+  f = message.getCriticalitylevel();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
   f = message.getLastupdated();
   if (f != null) {
     writer.writeMessage(
-      5,
+      7,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
@@ -1634,12 +1718,48 @@ proto.ApplicationInformation.prototype.setAppstatus = function(value) {
 
 
 /**
- * optional google.protobuf.Timestamp lastupdated = 5;
+ * optional int32 criticalityid = 5;
+ * @return {number}
+ */
+proto.ApplicationInformation.prototype.getCriticalityid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.ApplicationInformation} returns this
+ */
+proto.ApplicationInformation.prototype.setCriticalityid = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional string criticalitylevel = 6;
+ * @return {string}
+ */
+proto.ApplicationInformation.prototype.getCriticalitylevel = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.ApplicationInformation} returns this
+ */
+proto.ApplicationInformation.prototype.setCriticalitylevel = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp lastupdated = 7;
  * @return {?proto.google.protobuf.Timestamp}
  */
 proto.ApplicationInformation.prototype.getLastupdated = function() {
   return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 5));
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 7));
 };
 
 
@@ -1648,7 +1768,7 @@ proto.ApplicationInformation.prototype.getLastupdated = function() {
  * @return {!proto.ApplicationInformation} returns this
 */
 proto.ApplicationInformation.prototype.setLastupdated = function(value) {
-  return jspb.Message.setWrapperField(this, 5, value);
+  return jspb.Message.setWrapperField(this, 7, value);
 };
 
 
@@ -1666,7 +1786,7 @@ proto.ApplicationInformation.prototype.clearLastupdated = function() {
  * @return {boolean}
  */
 proto.ApplicationInformation.prototype.hasLastupdated = function() {
-  return jspb.Message.getField(this, 5) != null;
+  return jspb.Message.getField(this, 7) != null;
 };
 
 

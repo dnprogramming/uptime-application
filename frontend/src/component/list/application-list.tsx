@@ -1,12 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import {ReportClient} from '../../generated/ReportServiceClientPb';
+import {Empty} from 'google-protobuf/google/protobuf/empty_pb';
+import styled from 'styled-components';
+
+import ApplicationCard from '../card/application-card';
 import {
   ApplicationInformation,
-  GetApplicationsRequest,
   GetApplicationsResponse,
 } from '../../generated/report_pb';
-import ApplicationCard from '../card/application-card';
-import {Empty} from 'google-protobuf/google/protobuf/empty_pb';
+import {ReportClient} from '../../generated/ReportServiceClientPb';
+
+const ApplicationListing = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Apps = styled(ApplicationCard)`
+  max-width: 25dvw;
+  max-height: 10dvh;
+`;
 
 function ApplicationList() {
   const [monitorApps, setMonitorApps] = useState<ApplicationInformation[]>([]);
@@ -25,7 +40,7 @@ function ApplicationList() {
       {},
       (err: any, res: GetApplicationsResponse) => {
         const monitoredApplications = res.getAppsList();
-        if (monitoredApplications.length > 0) {
+        if (monitoredApplications.length > -1) {
           setMonitorApps(monitoredApplications);
         }
       }
@@ -33,13 +48,11 @@ function ApplicationList() {
   };
 
   return (
-    <div>
+    <ApplicationListing>
       {monitorApps.length === 0 && <p>No Apps Found</p>}
       {monitorApps.length > 0 &&
-        monitorApps.map(app => (
-          <ApplicationCard key={app.getAppid()} app={app} />
-        ))}
-    </div>
+        monitorApps.map(app => <Apps key={app.getAppid()} app={app} />)}
+    </ApplicationListing>
   );
 }
 

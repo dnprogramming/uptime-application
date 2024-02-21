@@ -1,10 +1,4 @@
-﻿using Dapper;
-using System.Text;
-using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
-using Google.Protobuf.WellKnownTypes;
-
-namespace backend.Processing;
+﻿namespace backend.Processing;
 
 public class ProcessingReport : IProcessingReport
 {
@@ -30,6 +24,12 @@ public class ProcessingReport : IProcessingReport
         _enc = enc;
     }
 
+    private async Task<string> GetCriticalityLevel(int id)
+    {
+        var crit = await _db.Criticalities.FindAsync(id);
+        return crit.CriticalityLevel;
+    }
+
     private async Task<List<ApplicationInformation>> GetApplicationsEncryptedForApi()
     {
         List<ApplicationInformation> applications = new();
@@ -50,6 +50,8 @@ public class ProcessingReport : IProcessingReport
                         Appname = decryptedappname,
                         Appstatus = r.Appstatus,
                         Lastupdated = r.Lastupdated,
+                        Criticalityid = r.Criticalityid,
+                        Criticalitylevel = await GetCriticalityLevel(r.Criticalityid),
                         Responsiblepersonname = decryptedresponsibility
                     };
                     applications.Add(app);
@@ -60,6 +62,7 @@ public class ProcessingReport : IProcessingReport
                 var appData = await _db.Appstatuses.ToListAsync();
                 foreach (var r in appData)
                 {
+                    
                     string decryptedappname = _dataProt.Unprotect(r.Appname);
                     string decryptedresponsibility = _dataProt.Unprotect(r.Responsibility);
                     ApplicationInformation app = new()
@@ -67,19 +70,21 @@ public class ProcessingReport : IProcessingReport
                         Appid = r.Id,
                         Appname = decryptedappname,
                         Appstatus = r.Currentappstatus,
+                        Criticalityid = r.CriticalityId,
+                        Criticalitylevel = await GetCriticalityLevel(r.CriticalityId),
                         Lastupdated = Timestamp.FromDateTime(r.Lastupdated),
                         Responsiblepersonname = decryptedresponsibility
                     };
                     applications.Add(app);
                 }
-                CacheUpdate();
+                await CacheUpdate();
             }
         }
         catch (Exception ex)
         {
             _logger.LogError($"A Error has occurred in GetApplications Encrypted API: {ex.Message}");
         }
-        return applications;
+        return applications.OrderBy(e => e.Criticalityid).ThenBy(e => e.Appname).ToList();
     }
 
     private async Task CacheUpdate()
@@ -87,7 +92,7 @@ public class ProcessingReport : IProcessingReport
         List<ApplicationInformation> applications = new();
         try
         {
-            var appData = _db.Appstatuses.ToList();
+            var appData = await _db.Appstatuses.ToListAsync();
             foreach (var r in appData)
             {
                 ApplicationInformation app = new()
@@ -95,20 +100,25 @@ public class ProcessingReport : IProcessingReport
                     Appid = r.Id,
                     Appname = r.Appname,
                     Appstatus = r.Currentappstatus,
+                    Criticalityid = r.CriticalityId,
+                    Criticalitylevel = await GetCriticalityLevel(r.CriticalityId),
                     Lastupdated = Timestamp.FromDateTime(r.Lastupdated.ToUniversalTime()),
                     Responsiblepersonname = r.Responsibility
                 };
                 applications.Add(app);
             }
-            _cache.Remove(cacheKey);
-            var jsonString = JsonConvert.SerializeObject(applications);
-            var byteArray = Encoding.UTF8.GetBytes(jsonString);
-            _cacheOptions.SetAbsoluteExpiration(DateTimeOffset.Now.AddDays(7));
-            _cache.Set(cacheKey, byteArray, _cacheOptions);
+            if (applications.Count() > 0)
+            {
+                _cache.Remove(cacheKey);
+                var jsonString = JsonConvert.SerializeObject(applications);
+                var byteArray = Encoding.UTF8.GetBytes(jsonString);
+                _cacheOptions.SetAbsoluteExpiration(DateTimeOffset.Now.AddDays(7));
+                _cache.Set(cacheKey, byteArray, _cacheOptions);
+            }
         }
         catch (Exception ex)
         {
-            _logger.LogError("A Error has occurred in GetApplications Encrypted Cache: ", ex.Message);
+            _logger.LogError("A Error has occurred in Cache Update: ", ex.Message);
         }
     }
     private async Task<bool> InsertApplicationEncrypted(AddApplicationRequest request)
@@ -121,7 +131,8 @@ public class ProcessingReport : IProcessingReport
             Appstatus appstatus = new()
             {
                 Appname = appname,
-                Responsibility = responsiblename
+                Responsibility = responsiblename,
+                CriticalityId = request.Criticalityid
             };
             await _db.Appstatuses.AddAsync(appstatus);
             await _db.SaveChangesAsync();
@@ -168,7 +179,7 @@ public class ProcessingReport : IProcessingReport
             if (string.IsNullOrWhiteSpace(request.Appname) || string.IsNullOrWhiteSpace(request.Responsiblepersonname))
                 return response;
             response.Success = await InsertApplicationEncrypted(request);
-            CacheUpdate();
+            await CacheUpdate();
         }
         catch (Exception ex)
         {
@@ -191,6 +202,7 @@ public class ProcessingReport : IProcessingReport
                 string.IsNullOrWhiteSpace(request.Responsiblepersonname))
                 return response;
             response.Success = await UpdateApplicationEncrypted(request);
+            await CacheUpdate();
         }
         catch (Exception ex)
         {

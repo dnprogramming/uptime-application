@@ -10,6 +10,9 @@ export class AddApplicationRequest extends jspb.Message {
   getResponsiblepersonname(): string;
   setResponsiblepersonname(value: string): AddApplicationRequest;
 
+  getCriticalityid(): number;
+  setCriticalityid(value: number): AddApplicationRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AddApplicationRequest.AsObject;
   static toObject(
@@ -31,6 +34,7 @@ export namespace AddApplicationRequest {
   export type AsObject = {
     appname: string;
     responsiblepersonname: string;
+    criticalityid: number;
   };
 }
 
@@ -74,6 +78,9 @@ export class UpdateApplicationRequest extends jspb.Message {
   getAppstatus(): number;
   setAppstatus(value: number): UpdateApplicationRequest;
 
+  getCriticalityid(): number;
+  setCriticalityid(value: number): UpdateApplicationRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateApplicationRequest.AsObject;
   static toObject(
@@ -97,6 +104,7 @@ export namespace UpdateApplicationRequest {
     appname: string;
     responsiblepersonname: string;
     appstatus: number;
+    criticalityid: number;
   };
 }
 
@@ -250,6 +258,12 @@ export class ApplicationInformation extends jspb.Message {
   getAppstatus(): number;
   setAppstatus(value: number): ApplicationInformation;
 
+  getCriticalityid(): number;
+  setCriticalityid(value: number): ApplicationInformation;
+
+  getCriticalitylevel(): string;
+  setCriticalitylevel(value: string): ApplicationInformation;
+
   getLastupdated(): google_protobuf_timestamp_pb.Timestamp | undefined;
   setLastupdated(
     value?: google_protobuf_timestamp_pb.Timestamp
@@ -280,6 +294,8 @@ export namespace ApplicationInformation {
     appname: string;
     responsiblepersonname: string;
     appstatus: number;
+    criticalityid: number;
+    criticalitylevel: string;
     lastupdated?: google_protobuf_timestamp_pb.Timestamp.AsObject;
   };
 }

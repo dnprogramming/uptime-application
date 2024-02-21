@@ -13,5 +13,11 @@ public partial class Appstatus
 
     public int Currentappstatus { get; set; }
 
+    public int CriticalityId { get; set; }
+
     public DateTime Lastupdated { get; set; }
+
+    public virtual Criticality Criticality { get; set; } = null!;
+
+    public virtual ICollection<Host> Hosts { get; set; } = new List<Host>();
 }

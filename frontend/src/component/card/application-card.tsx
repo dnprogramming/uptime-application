@@ -5,34 +5,44 @@ import {ApplicationInformation} from '../../generated/report_pb';
 
 const AppCard = styled.div`
   display: flex;
-  width: 100dvw;
+  justify-content: space-between;
+  padding: 1rem;
+  margin: 1rem;
+  background: rgba(20, 20, 20, 0.2);
+  border-radius: 1rem;
 `;
 const StatusDiv = styled.div`
-  width: 25dvw;
+  shape-outside: circle(50%);
+  clip-path: circle(2dvw);
+  width: 25%;
+  height: 100%;
 `;
 const StatusCircle = styled.div<{status: Number}>`
-  width: 80dvw;
-  height: 80dvh;
-  border-radius: 25%;
+  width: 100%;
+  height: 100%;
   background-color: ${props =>
     props.status === 0 ? 'Green' : props.status === 1 ? 'Yellow' : 'Red'};
 `;
 const AppDiv = styled.div`
-  width: 75dvw;
+  text-align: left;
 `;
 const AppName = styled.div`
-  width: 100dvw;
+  font-size: 2rem;
+`;
+const CriticalityLevel = styled.div`
+  font-size: 1.5rem;
 `;
 const PersonResponsible = styled.div`
-  width: 100dvw;
+  font-size: 1.1rem;
 `;
 const Updated = styled.div`
-  width: 100dvw;
+  font-size: 1rem;
 `;
 
 function ApplicationCard({app}: {app: ApplicationInformation}) {
   const appName = app.getAppname();
   const appStatus = app.getAppstatus();
+  const criticalityLevel = app.getCriticalitylevel();
   const lastUpdated = app.getLastupdated();
   const updated = lastUpdated?.toDate().toLocaleString().replace(',', ' at');
   const responsible = app.getResponsiblepersonname();
@@ -44,8 +54,17 @@ function ApplicationCard({app}: {app: ApplicationInformation}) {
       </StatusDiv>
       <AppDiv>
         <AppName>{appName}</AppName>
-        <PersonResponsible>{responsible}</PersonResponsible>
-        <Updated>Last Updated: {updated}</Updated>
+        <CriticalityLevel>{criticalityLevel}</CriticalityLevel>
+        <PersonResponsible>
+          Person Responsible:
+          <br />
+          {responsible}
+        </PersonResponsible>
+        <Updated>
+          Last Updated:
+          <br />
+          {updated}
+        </Updated>
       </AppDiv>
     </AppCard>
   );

@@ -81,7 +81,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "grpc": "protoc -I=./protos --js_out=import_style=commonjs,binary:./src/generated --grpc-web_out=import_style=typescript,mode=grpcweb:./src/generated *.proto",
+    "grpc": "protoc -I=./protos --js_out=import_style=commonjs,binary:./src/generated --grpc-web_out=import_style=typescript,mode=grpcweb:./src/generated report.proto",
     "lint": "gts lint",
     "clean": "gts clean",
     "compile": "tsc",
