@@ -5,7 +5,7 @@ import ApplicationList from './component/list/application-list';
 
 const AppBody = styled.div`
   background: #cccccc;
-  height: 100vh;
+  height: 100%;
 `;
 
 function App() {

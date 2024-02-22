@@ -19,8 +19,8 @@ const ApplicationListing = styled.div`
 `;
 
 const Apps = styled(ApplicationCard)`
-  max-width: 25dvw;
-  max-height: 10dvh;
+  max-width: 25vw;
+  max-height: 10vh;
 `;
 
 function ApplicationList() {
@@ -28,9 +28,9 @@ function ApplicationList() {
   const client = new ReportClient('http://localhost:8080', null, {});
 
   useEffect(() => {
-    const intervalId = setInterval(getApps, 2000); // Call getApps every 2 seconds
+    const intervalId = setInterval(getApps, 500);
 
-    return () => clearInterval(intervalId); // Clear interval on cleanup
+    return () => clearInterval(intervalId);
   }, []);
 
   const getApps = async () => {
