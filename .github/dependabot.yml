@@ -5,33 +5,13 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-
-  - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "/android" # Location of package manifests
-    schedule:
-      interval: "daily"
       
   - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/api" # Location of package manifests
-    schedule:
-      interval: "daily"
-  
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/ai" # Location of package manifests
-    schedule:
-      interval: "daily"
-
-  - package-ecosystem: "swift" # See documentation for possible values
-    directory: "/ios" # Location of package manifests
+    directory: "/backend" # Location of package manifests
     schedule:
       interval: "daily"
       
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/webapp" # Location of package manifests
-    schedule:
-      interval: "daily"
-
-  - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "/infrastructure" # Location of package manifests
+    directory: "/frontend" # Location of package manifests
     schedule:
       interval: "daily"
