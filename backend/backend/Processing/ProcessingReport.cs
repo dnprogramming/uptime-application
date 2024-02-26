@@ -154,6 +154,7 @@ public class ProcessingReport : IProcessingReport
             var responsiblename = _dataProt.Protect(request.Responsiblepersonname.Trim());
             var currentRecord = await _db.Appstatuses.FindAsync(request.Appid);
             currentRecord.Appname = appname;
+            currentRecord.CriticalityId = request.Criticalityid;
             currentRecord.Responsibility = responsiblename;
             currentRecord.Currentappstatus = request.Appstatus;
             currentRecord.Lastupdated = DateTime.Now;

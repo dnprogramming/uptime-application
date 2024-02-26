@@ -3,13 +3,14 @@ import styled from 'styled-components';
 
 import {ApplicationInformation} from '../../generated/report_pb';
 
-const AppCard = styled.div`
+const AppCard = styled.a`
   display: flex;
   justify-content: space-between;
   padding: 1rem;
   margin: 1rem;
   background: rgba(20, 20, 20, 0.2);
   border-radius: 1rem;
+  text-decoration: none;
 `;
 const StatusDiv = styled.div`
   shape-outside: circle(50%);
@@ -47,8 +48,9 @@ function ApplicationCard({app}: {app: ApplicationInformation}) {
   const updated = lastUpdated?.toDate().toLocaleString().replace(',', ' at');
   const responsible = app.getResponsiblepersonname();
   const appId = app.getAppid();
+  const link = '/edit/' + appId;
   return (
-    <AppCard key={appId}>
+    <AppCard href={link} key={appId}>
       <StatusDiv>
         <StatusCircle status={appStatus} />
       </StatusDiv>
