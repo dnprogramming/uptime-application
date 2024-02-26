@@ -54,7 +54,7 @@
     "resolve-url-loader": "*",
     "sass-loader": "^14.1.1",
     "semver": "^7.3.5",
-    "source-map-loader": "^3.0.0",
+    "source-map-loader": "^5.0.0",
     "style-loader": "^3.3.1",
     "styled-components": "^6.0.0",
     "stylis": "^4.0.0",
