@@ -84,7 +84,7 @@ public class ProcessingReport : IProcessingReport
         {
             _logger.LogError($"A Error has occurred in GetApplications Encrypted API: {ex.Message}");
         }
-        return applications.OrderBy(e => e.Criticalityid).ThenBy(e => e.Appname).ToList();
+        return applications.OrderByDescending(e => e.Appstatus).ThenBy(e => e.Criticalityid).ThenBy(e => e.Appname).ToList();
     }
 
     private async Task CacheUpdate()

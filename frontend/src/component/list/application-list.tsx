@@ -3,6 +3,7 @@ import {Empty} from 'google-protobuf/google/protobuf/empty_pb';
 import styled from 'styled-components';
 
 import ApplicationCard from '../card/application-card';
+import {device} from '../media-query/media-query';
 import {
   ApplicationInformation,
   GetApplicationsResponse,
@@ -11,15 +12,23 @@ import {ReportClient} from '../../generated/ReportServiceClientPb';
 
 const ApplicationListing = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 
-  @media (max-width: 600px) {
+  @media ${device.lg} {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media ${device.md} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media ${device.sm} {
     grid-template-columns: 1fr;
   }
 `;
 
 const Apps = styled(ApplicationCard)`
-  max-width: 25vw;
+  max-width: 20vw;
   max-height: 10vh;
 `;
 

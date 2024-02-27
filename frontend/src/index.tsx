@@ -10,7 +10,7 @@ import EditApplication from './component/form/edit-application';
 import Navbar from './component/navbar/navbar';
 
 const AppBody = styled.div`
-  background: #cccccc;
+  background: #babdbf;
   height: 100%;
 `;
 
