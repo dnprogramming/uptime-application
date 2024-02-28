@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-
-namespace backend.DataContext;
+﻿namespace backend.DataContext;
 
 public partial class UptimereportsContext : DbContext
 {

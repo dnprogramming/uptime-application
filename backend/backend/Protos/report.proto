@@ -16,6 +16,7 @@ message AddApplicationRequest {
   string appname = 1;
   string responsiblepersonname = 2;
   int32 criticalityid = 3;
+  repeated string hostname = 4;
 }
 
 message AddApplicationResponse {
@@ -28,6 +29,7 @@ message UpdateApplicationRequest {
   string responsiblepersonname = 3;
   int32 appstatus = 4;
   int32 criticalityid = 5;
+  repeated string hostname = 6;
 }
 
 message UpdateApplicationResponse {
@@ -53,4 +55,5 @@ message ApplicationInformation {
   int32 criticalityid = 5;
   string criticalitylevel = 6;
   google.protobuf.Timestamp lastupdated = 7;
+  repeated string hostname = 8;
 }

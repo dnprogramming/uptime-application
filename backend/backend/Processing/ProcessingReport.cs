@@ -3,36 +3,76 @@
 public class ProcessingReport : IProcessingReport
 {
     private const string cacheKey = "report";
+    private const string hostnameCacheKey = "hosts";
     private DistributedCacheEntryOptions _cacheOptions = new();
     private readonly IDistributedCache _cache;
     private readonly IDataProtector _dataProt;
-    private readonly IDbConnection _connection;
-    private readonly IEncrypting _enc;
     private UptimereportsContext _db;
     private ILogger<ProcessingReport> _logger;
+    private Dictionary<int, string> criticalityDictionary = new();
     public ProcessingReport(IDistributedCache cache, UptimereportsContext db,
                                IDataProtectionProvider dataProtProvider,
-                               IDbConnection connection,
-                               IEncrypting enc,
                                ILogger<ProcessingReport> logger)
     {
         _cache = cache;
         _db = db;
         _logger = logger;
-        _connection = connection;
         _dataProt = dataProtProvider.CreateProtector("Reports");
-        _enc = enc;
     }
 
-    private async Task<string> GetCriticalityLevel(int id)
+    private async Task LoadCriticalityLevel()
     {
-        var crit = await _db.Criticalities.FindAsync(id);
-        return crit.CriticalityLevel;
+        var criticality = await _db.Criticalities.ToListAsync();
+        foreach (Criticality c in criticality)
+        {
+            if (!criticalityDictionary.ContainsKey(c.Id))
+                criticalityDictionary.Add(c.Id, c.CriticalityLevel);
+        }
+    }
+
+    private async Task<List<string>> GetHostnames(int Appid)
+    {
+        List<string> hosts = new();
+        try
+        {
+            string truehostcachekey = $"{hostnameCacheKey}{Appid}";
+            if (_cache.Get(truehostcachekey) != null)
+            {
+                var result = _cache.Get(truehostcachekey);
+                var jsonString = Encoding.UTF8.GetString(result);
+                var results = JsonConvert.DeserializeObject<List<string>>(jsonString);
+                foreach (string r in results)
+                {
+                    string decryptedhostname = _dataProt.Unprotect(r);
+                    hosts.Add(decryptedhostname);
+                }
+            }
+            else
+            {
+                var hostnames = await _db.Hosts.Where(e => e.AppId == Appid).Select(e => e.Hostname).ToListAsync();
+                foreach (string r in hostnames)
+                {
+                    string decryptedhostname = _dataProt.Unprotect(r);
+                    hosts.Add(decryptedhostname);
+                }
+                _cache.Remove(truehostcachekey);
+                var jsonString = JsonConvert.SerializeObject(hosts);
+                var byteArray = Encoding.UTF8.GetBytes(jsonString);
+                _cacheOptions.SetAbsoluteExpiration(DateTimeOffset.Now.AddDays(7));
+                _cache.Set(truehostcachekey, byteArray, _cacheOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error has occurred in GetHostnames: {ex.Message}");
+        }
+        return hosts;
     }
 
     private async Task<List<ApplicationInformation>> GetApplicationsEncryptedForApi()
     {
         List<ApplicationInformation> applications = new();
+        await LoadCriticalityLevel();
         try
         {
             if (_cache.Get(cacheKey) != null)
@@ -44,6 +84,7 @@ public class ProcessingReport : IProcessingReport
                 {
                     string decryptedappname = _dataProt.Unprotect(r.Appname);
                     string decryptedresponsibility = _dataProt.Unprotect(r.Responsiblepersonname);
+                    List<string> hostnames = await GetHostnames(r.Appid);
                     ApplicationInformation app = new()
                     {
                         Appid = r.Appid,
@@ -51,9 +92,10 @@ public class ProcessingReport : IProcessingReport
                         Appstatus = r.Appstatus,
                         Lastupdated = r.Lastupdated,
                         Criticalityid = r.Criticalityid,
-                        Criticalitylevel = await GetCriticalityLevel(r.Criticalityid),
-                        Responsiblepersonname = decryptedresponsibility
+                        Criticalitylevel = criticalityDictionary.GetValueOrDefault(r.Criticalityid),
+                        Responsiblepersonname = decryptedresponsibility,
                     };
+                    app.Hostname.AddRange(hostnames);
                     applications.Add(app);
                 }
             }
@@ -62,7 +104,7 @@ public class ProcessingReport : IProcessingReport
                 var appData = await _db.Appstatuses.ToListAsync();
                 foreach (var r in appData)
                 {
-                    
+
                     string decryptedappname = _dataProt.Unprotect(r.Appname);
                     string decryptedresponsibility = _dataProt.Unprotect(r.Responsibility);
                     ApplicationInformation app = new()
@@ -71,7 +113,7 @@ public class ProcessingReport : IProcessingReport
                         Appname = decryptedappname,
                         Appstatus = r.Currentappstatus,
                         Criticalityid = r.CriticalityId,
-                        Criticalitylevel = await GetCriticalityLevel(r.CriticalityId),
+                        Criticalitylevel = criticalityDictionary.GetValueOrDefault(r.CriticalityId),
                         Lastupdated = Timestamp.FromDateTime(r.Lastupdated),
                         Responsiblepersonname = decryptedresponsibility
                     };
@@ -90,6 +132,7 @@ public class ProcessingReport : IProcessingReport
     private async Task CacheUpdate()
     {
         List<ApplicationInformation> applications = new();
+        await LoadCriticalityLevel();
         try
         {
             var appData = await _db.Appstatuses.ToListAsync();
@@ -101,7 +144,7 @@ public class ProcessingReport : IProcessingReport
                     Appname = r.Appname,
                     Appstatus = r.Currentappstatus,
                     Criticalityid = r.CriticalityId,
-                    Criticalitylevel = await GetCriticalityLevel(r.CriticalityId),
+                    Criticalitylevel = criticalityDictionary.GetValueOrDefault(r.CriticalityId),
                     Lastupdated = Timestamp.FromDateTime(r.Lastupdated.ToUniversalTime()),
                     Responsiblepersonname = r.Responsibility
                 };
@@ -118,7 +161,47 @@ public class ProcessingReport : IProcessingReport
         }
         catch (Exception ex)
         {
-            _logger.LogError("A Error has occurred in Cache Update: ", ex.Message);
+            _logger.LogError($"A Error has occurred in Cache Update: {ex.Message}");
+        }
+    }
+    private async Task InsertingHostnamesEncrypted(List<string> hostnames, int Appid)
+    {
+        List<string> encrypted = new();
+        foreach (string h in hostnames)
+        {
+            string encryptedhostname = _dataProt.Protect(h);
+            encrypted.Add(encryptedhostname);
+        }
+        foreach (string e in encrypted)
+        {
+            Host newHost = new()
+            {
+                AppId = Appid,
+                Hostname = e
+            };
+            await _db.Hosts.AddAsync(newHost);
+            await _db.SaveChangesAsync();
+        }
+    }
+    private async Task UpdatingHostnamesEncrypted(List<string> hostnames, int Appid)
+    {
+        List<string> encrypted = new();
+        foreach (string h in hostnames)
+        {
+            string encryptedhostname = _dataProt.Protect(h);
+            encrypted.Add(encryptedhostname);
+        }
+        _db.Hosts.RemoveRange(await _db.Hosts.Where(e => e.AppId == Appid).ToListAsync());
+        await _db.SaveChangesAsync();
+        foreach (string e in encrypted)
+        {
+            Host newHost = new()
+            {
+                AppId = Appid,
+                Hostname = e
+            };
+            await _db.Hosts.AddAsync(newHost);
+            await _db.SaveChangesAsync();
         }
     }
     private async Task<bool> InsertApplicationEncrypted(AddApplicationRequest request)
@@ -136,11 +219,13 @@ public class ProcessingReport : IProcessingReport
             };
             await _db.Appstatuses.AddAsync(appstatus);
             await _db.SaveChangesAsync();
+            if (request.Hostname.Count() > 0)
+                await InsertingHostnamesEncrypted(request.Hostname.ToList(), appstatus.Id);
             success = true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message, "Error has occurred in InsertApplicationEncrypted: ");
+            _logger.LogError($"Error has occurred in InsertApplicationEncrypted: {ex.Message}");
         }
         return success;
     }
@@ -160,11 +245,12 @@ public class ProcessingReport : IProcessingReport
             currentRecord.Lastupdated = DateTime.Now;
             _db.Appstatuses.Update(currentRecord);
             await _db.SaveChangesAsync();
+            await UpdatingHostnamesEncrypted(request.Hostname.ToList(), request.Appid);
             success = true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message, "Error has occurred in UpdateApplicationEncrypted: ");
+            _logger.LogError($"Error has occurred in UpdateApplicationEncrypted: {ex.Message}");
         }
         return success;
     }
@@ -184,7 +270,7 @@ public class ProcessingReport : IProcessingReport
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error Adding Application");
+            _logger.LogError($"Error Adding Application: {ex.Message}");
         }
         return response;
 	}
@@ -207,7 +293,7 @@ public class ProcessingReport : IProcessingReport
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error Updating Application");
+            _logger.LogError($"Error Updating Application: {ex.Message}");
         }
         return response;
 	}

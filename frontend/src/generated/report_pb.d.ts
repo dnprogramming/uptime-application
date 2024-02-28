@@ -13,6 +13,11 @@ export class AddApplicationRequest extends jspb.Message {
   getCriticalityid(): number;
   setCriticalityid(value: number): AddApplicationRequest;
 
+  getHostnameList(): Array<string>;
+  setHostnameList(value: Array<string>): AddApplicationRequest;
+  clearHostnameList(): AddApplicationRequest;
+  addHostname(value: string, index?: number): AddApplicationRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AddApplicationRequest.AsObject;
   static toObject(
@@ -35,6 +40,7 @@ export namespace AddApplicationRequest {
     appname: string;
     responsiblepersonname: string;
     criticalityid: number;
+    hostnameList: Array<string>;
   };
 }
 
@@ -81,6 +87,11 @@ export class UpdateApplicationRequest extends jspb.Message {
   getCriticalityid(): number;
   setCriticalityid(value: number): UpdateApplicationRequest;
 
+  getHostnameList(): Array<string>;
+  setHostnameList(value: Array<string>): UpdateApplicationRequest;
+  clearHostnameList(): UpdateApplicationRequest;
+  addHostname(value: string, index?: number): UpdateApplicationRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateApplicationRequest.AsObject;
   static toObject(
@@ -105,6 +116,7 @@ export namespace UpdateApplicationRequest {
     responsiblepersonname: string;
     appstatus: number;
     criticalityid: number;
+    hostnameList: Array<string>;
   };
 }
 
@@ -271,6 +283,11 @@ export class ApplicationInformation extends jspb.Message {
   hasLastupdated(): boolean;
   clearLastupdated(): ApplicationInformation;
 
+  getHostnameList(): Array<string>;
+  setHostnameList(value: Array<string>): ApplicationInformation;
+  clearHostnameList(): ApplicationInformation;
+  addHostname(value: string, index?: number): ApplicationInformation;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ApplicationInformation.AsObject;
   static toObject(
@@ -297,5 +314,6 @@ export namespace ApplicationInformation {
     criticalityid: number;
     criticalitylevel: string;
     lastupdated?: google_protobuf_timestamp_pb.Timestamp.AsObject;
+    hostnameList: Array<string>;
   };
 }

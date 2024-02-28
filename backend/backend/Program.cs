@@ -50,6 +50,7 @@ else
 
 builder.Services.AddSingleton(dbConnection);
 builder.Services.AddTransient<IEncrypting, Encrypting>();
+builder.Services.AddTransient<IHealthTracker, HealthTracker>();
 builder.Services.AddTransient<IProcessingReport, ProcessingReport>();
 
 builder.Services.AddDbContext<UptimereportsContext>((DbContextOptionsBuilder obj) =>

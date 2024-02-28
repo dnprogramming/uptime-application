@@ -1,10 +1,10 @@
 ﻿global using backend.DataContext;
-global using backend.DataModel;
 global using backend.Interfaces;
 global using backend.Processing;
 global using backend.Protos;
 global using backend.Services;
 global using backend.Utilities;
+global using Host = backend.DataContext.Host;
 global using Google.Protobuf.WellKnownTypes;
 global using Grpc.Core;
 global using Grpc.Core.Interceptors;
@@ -20,4 +20,5 @@ global using Serilog;
 global using Serilog.Events;
 global using StackExchange.Redis;
 global using System.Data;
+global using System.Net.NetworkInformation;
 global using System.Text;

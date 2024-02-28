@@ -39,7 +39,7 @@ goog.exportSymbol('proto.UpdateApplicationResponse', null, global);
  * @constructor
  */
 proto.AddApplicationRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.AddApplicationRequest.repeatedFields_, null);
 };
 goog.inherits(proto.AddApplicationRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -81,7 +81,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.UpdateApplicationRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.UpdateApplicationRequest.repeatedFields_, null);
 };
 goog.inherits(proto.UpdateApplicationRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -207,7 +207,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.ApplicationInformation = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.ApplicationInformation.repeatedFields_, null);
 };
 goog.inherits(proto.ApplicationInformation, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -217,6 +217,13 @@ if (goog.DEBUG && !COMPILED) {
    */
   proto.ApplicationInformation.displayName = 'proto.ApplicationInformation';
 }
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.AddApplicationRequest.repeatedFields_ = [4];
 
 
 
@@ -251,7 +258,8 @@ proto.AddApplicationRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     appname: jspb.Message.getFieldWithDefault(msg, 1, ""),
     responsiblepersonname: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    criticalityid: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    criticalityid: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    hostnameList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -300,6 +308,10 @@ proto.AddApplicationRequest.deserializeBinaryFromReader = function(msg, reader) 
       var value = /** @type {number} */ (reader.readInt32());
       msg.setCriticalityid(value);
       break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addHostname(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -347,6 +359,13 @@ proto.AddApplicationRequest.serializeBinaryToWriter = function(message, writer) 
   if (f !== 0) {
     writer.writeInt32(
       3,
+      f
+    );
+  }
+  f = message.getHostnameList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
       f
     );
   }
@@ -404,6 +423,43 @@ proto.AddApplicationRequest.prototype.getCriticalityid = function() {
  */
 proto.AddApplicationRequest.prototype.setCriticalityid = function(value) {
   return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * repeated string hostname = 4;
+ * @return {!Array<string>}
+ */
+proto.AddApplicationRequest.prototype.getHostnameList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.AddApplicationRequest} returns this
+ */
+proto.AddApplicationRequest.prototype.setHostnameList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.AddApplicationRequest} returns this
+ */
+proto.AddApplicationRequest.prototype.addHostname = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.AddApplicationRequest} returns this
+ */
+proto.AddApplicationRequest.prototype.clearHostnameList = function() {
+  return this.setHostnameList([]);
 };
 
 
@@ -538,6 +594,13 @@ proto.AddApplicationResponse.prototype.setSuccess = function(value) {
 
 
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.UpdateApplicationRequest.repeatedFields_ = [6];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -573,7 +636,8 @@ proto.UpdateApplicationRequest.toObject = function(includeInstance, msg) {
     appname: jspb.Message.getFieldWithDefault(msg, 2, ""),
     responsiblepersonname: jspb.Message.getFieldWithDefault(msg, 3, ""),
     appstatus: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    criticalityid: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    criticalityid: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    hostnameList: (f = jspb.Message.getRepeatedField(msg, 6)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -629,6 +693,10 @@ proto.UpdateApplicationRequest.deserializeBinaryFromReader = function(msg, reade
     case 5:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setCriticalityid(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addHostname(value);
       break;
     default:
       reader.skipField();
@@ -691,6 +759,13 @@ proto.UpdateApplicationRequest.serializeBinaryToWriter = function(message, write
   if (f !== 0) {
     writer.writeInt32(
       5,
+      f
+    );
+  }
+  f = message.getHostnameList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      6,
       f
     );
   }
@@ -784,6 +859,43 @@ proto.UpdateApplicationRequest.prototype.getCriticalityid = function() {
  */
 proto.UpdateApplicationRequest.prototype.setCriticalityid = function(value) {
   return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * repeated string hostname = 6;
+ * @return {!Array<string>}
+ */
+proto.UpdateApplicationRequest.prototype.getHostnameList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 6));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.UpdateApplicationRequest} returns this
+ */
+proto.UpdateApplicationRequest.prototype.setHostnameList = function(value) {
+  return jspb.Message.setField(this, 6, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.UpdateApplicationRequest} returns this
+ */
+proto.UpdateApplicationRequest.prototype.addHostname = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 6, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.UpdateApplicationRequest} returns this
+ */
+proto.UpdateApplicationRequest.prototype.clearHostnameList = function() {
+  return this.setHostnameList([]);
 };
 
 
@@ -1460,6 +1572,13 @@ proto.GetApplicationResponse.prototype.hasApp = function() {
 
 
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.ApplicationInformation.repeatedFields_ = [8];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -1497,7 +1616,8 @@ proto.ApplicationInformation.toObject = function(includeInstance, msg) {
     appstatus: jspb.Message.getFieldWithDefault(msg, 4, 0),
     criticalityid: jspb.Message.getFieldWithDefault(msg, 5, 0),
     criticalitylevel: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    lastupdated: (f = msg.getLastupdated()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    lastupdated: (f = msg.getLastupdated()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    hostnameList: (f = jspb.Message.getRepeatedField(msg, 8)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -1562,6 +1682,10 @@ proto.ApplicationInformation.deserializeBinaryFromReader = function(msg, reader)
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setLastupdated(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addHostname(value);
       break;
     default:
       reader.skipField();
@@ -1640,6 +1764,13 @@ proto.ApplicationInformation.serializeBinaryToWriter = function(message, writer)
       7,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getHostnameList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      8,
+      f
     );
   }
 };
@@ -1787,6 +1918,43 @@ proto.ApplicationInformation.prototype.clearLastupdated = function() {
  */
 proto.ApplicationInformation.prototype.hasLastupdated = function() {
   return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * repeated string hostname = 8;
+ * @return {!Array<string>}
+ */
+proto.ApplicationInformation.prototype.getHostnameList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 8));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.ApplicationInformation} returns this
+ */
+proto.ApplicationInformation.prototype.setHostnameList = function(value) {
+  return jspb.Message.setField(this, 8, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.ApplicationInformation} returns this
+ */
+proto.ApplicationInformation.prototype.addHostname = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 8, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.ApplicationInformation} returns this
+ */
+proto.ApplicationInformation.prototype.clearHostnameList = function() {
+  return this.setHostnameList([]);
 };
 
 
