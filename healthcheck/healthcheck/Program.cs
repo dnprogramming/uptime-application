@@ -11,7 +11,7 @@ EndPointCollection endpointCollection = new()
   redisConn.Split(',')[0]
 };
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = Host.CreateApplicationBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddDataProtection()
     .SetApplicationName("datasecurity")
@@ -36,22 +36,7 @@ var log = new LoggerConfiguration()
           )
         .CreateLogger();
 
-if (!builder.Environment.IsProduction())
-{
-    builder.Services.AddGrpc(options =>
-    {
-        {
-            options.Interceptors.Add<ServerLoggerInterceptor>();
-            options.EnableDetailedErrors = true;
-        }
-    });
-}
-else
-    builder.Services.AddGrpc();
-
 builder.Services.AddSingleton(dbConnection);
-builder.Services.AddTransient<IEncrypting, Encrypting>();
-builder.Services.AddTransient<IProcessingReport, ProcessingReport>();
 
 builder.Services.AddDbContext<UptimereportsContext>((DbContextOptionsBuilder obj) =>
 {
@@ -70,28 +55,10 @@ builder.Services.AddStackExchangeRedisCache((RedisCacheOptions rco) =>
     };
 });
 
-if (!builder.Environment.IsProduction())
-{
-    builder.Services.AddGrpcReflection();
-}
+builder.Services.AddTransient<IProcessingHealthchecks, ProcessingHealthchecks>();
 
-builder.Host.UseSerilog(log);
-builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
-{
-    builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
-}));
+builder.Services.AddHostedService<Worker>();
 
-var app = builder.Build();
+var host = builder.Build();
+host.Run();
 
-app.UseCors();
-app.MapGrpcService<ReportService>().RequireCors("AllowAll");
-
-if (!app.Environment.IsProduction())
-{
-    app.MapGrpcReflectionService();
-}
-
-app.Run();

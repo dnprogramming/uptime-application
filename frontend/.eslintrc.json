@@ -7,6 +7,7 @@
     "@typescript-eslint/triple-slash-reference": "off",
     "eqeqeq": "off",
     "node/no-extraneous-require": "off",
+    "node/no-extraneous-import": "off",
     "node/no-unpublished-import": "off",
     "node/no-unsupported-features/es-syntax": "off",
     "no-process-exit": "off"
