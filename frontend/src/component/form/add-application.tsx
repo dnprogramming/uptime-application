@@ -63,7 +63,11 @@ function AddApplication() {
   const [person, setPerson] = useState('');
   const [criticality, setCriticality] = useState(1);
   const [hosts, setHosts] = useState('');
-  const client = new ReportClient(process.env.GrpcEndpointUrl as string, null, {});
+  const client = new ReportClient(
+    process.env.GrpcEndpointUrl as string,
+    null,
+    {}
+  );
   const navigate = useNavigate();
 
   const changeAppname = (event: ChangeEvent<{value: string}>) => {
@@ -121,8 +125,8 @@ function AddApplication() {
         </CriticalityField>
       </Seperator>
       <Seperator>
-          <HostsLabel>Hosts: </HostsLabel>
-          <HostsField onChange={changeHosts} required></HostsField>
+        <HostsLabel>Hosts: </HostsLabel>
+        <HostsField onChange={changeHosts} required></HostsField>
       </Seperator>
       <Seperator>
         <SubmitEmptyDiv></SubmitEmptyDiv>

@@ -82,7 +82,11 @@ function EditApplication() {
   const [criticality, setCriticality] = useState(1);
   const [hosts, setHosts] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
-  const client = new ReportClient(process.env.GrpcEndpointUrl as string, null, {});
+  const client = new ReportClient(
+    process.env.GrpcEndpointUrl as string,
+    null,
+    {}
+  );
   const params = useParams();
   const navigate = useNavigate();
 
@@ -190,8 +194,8 @@ function EditApplication() {
         </CriticalityField>
       </Seperator>
       <Seperator>
-          <HostsLabel>Hosts: </HostsLabel>
-          <HostsField value={hosts} onChange={changeHosts} required />
+        <HostsLabel>Hosts: </HostsLabel>
+        <HostsField value={hosts} onChange={changeHosts} required />
       </Seperator>
       <Seperator>
         <LastUpdatedLabel>Last Updated:</LastUpdatedLabel>

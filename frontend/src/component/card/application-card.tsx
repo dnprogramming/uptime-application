@@ -28,8 +28,8 @@ const StatusCircle = styled.div<{status: Number}>`
     props.status === 0
       ? '#3d7c47'
       : props.status === 1
-      ? '#ffde22'
-      : '#eb1736'};
+        ? '#ffde22'
+        : '#eb1736'};
 `;
 const AppDiv = styled.div`
   text-align: left;

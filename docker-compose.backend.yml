@@ -1,7 +1,9 @@
 ---
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - SpPassKey=Test2Alpha1234!

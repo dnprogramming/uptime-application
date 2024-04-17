@@ -1,7 +1,9 @@
 ---
 services:
   proxy:
-    build: ./proxy
+    build: 
+      context: ./proxy
+      dockerfile: Dockerfile
     image: proxy
     container_name: proxy
     restart: always
@@ -11,7 +13,9 @@ services:
       - app-network
       - api-network
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     image: frontend
     container_name: frontend
     restart: always
