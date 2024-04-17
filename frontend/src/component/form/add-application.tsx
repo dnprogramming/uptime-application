@@ -42,6 +42,13 @@ const CriticalityLabel = styled.label`
 const CriticalityField = styled.select`
   width: 25vw;
 `;
+const HostsLabel = styled.label`
+  width: 25vw;
+  text-align: right;
+`;
+const HostsField = styled.textarea`
+  width: 25vw;
+`;
 const SubmitEmptyDiv = styled.div`
   width: 25vw;
 `;
@@ -55,7 +62,8 @@ function AddApplication() {
   const [appname, setAppname] = useState('');
   const [person, setPerson] = useState('');
   const [criticality, setCriticality] = useState(1);
-  const client = new ReportClient('http://localhost:8080', null, {});
+  const [hosts, setHosts] = useState('');
+  const client = new ReportClient(process.env.GrpcEndpointUrl as string, null, {});
   const navigate = useNavigate();
 
   const changeAppname = (event: ChangeEvent<{value: string}>) => {
@@ -67,8 +75,11 @@ function AddApplication() {
   };
 
   const changeCriticality = (event: ChangeEvent<{value: number}>) => {
-    console.log(event);
     setCriticality(event.target.value);
+  };
+
+  const changeHosts = (event: ChangeEvent<{value: string}>) => {
+    setHosts(event.target.value);
   };
 
   const handleSubmit = (event: SubmitEvent) => {
@@ -77,6 +88,7 @@ function AddApplication() {
     addApplicationReq.setAppname(appname);
     addApplicationReq.setCriticalityid(criticality);
     addApplicationReq.setResponsiblepersonname(person);
+    addApplicationReq.setHostnameList(hosts.split(/\n/));
 
     client.addApplication(
       addApplicationReq,
@@ -107,6 +119,10 @@ function AddApplication() {
             </option>
           ))}
         </CriticalityField>
+      </Seperator>
+      <Seperator>
+          <HostsLabel>Hosts: </HostsLabel>
+          <HostsField onChange={changeHosts} required></HostsField>
       </Seperator>
       <Seperator>
         <SubmitEmptyDiv></SubmitEmptyDiv>

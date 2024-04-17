@@ -34,7 +34,7 @@ const Apps = styled(ApplicationCard)`
 
 function ApplicationList() {
   const [monitorApps, setMonitorApps] = useState<ApplicationInformation[]>([]);
-  const client = new ReportClient('http://localhost:8080', null, {});
+  const client = new ReportClient(process.env.GrpcEndpointUrl as string, null, {});
 
   useEffect(() => {
     const intervalId = setInterval(getApps, 500);

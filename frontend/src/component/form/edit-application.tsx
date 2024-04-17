@@ -51,6 +51,13 @@ const CriticalityLabel = styled.label`
 const CriticalityField = styled.select`
   width: 25vw;
 `;
+const HostsLabel = styled.label`
+  width: 25vw;
+  text-align: right;
+`;
+const HostsField = styled.textarea`
+  width: 25vw;
+`;
 const LastUpdatedLabel = styled.label`
   width: 25vw;
   text-align: right;
@@ -73,8 +80,9 @@ function EditApplication() {
   const [appstatus, setAppstatus] = useState(0);
   const [person, setPerson] = useState('');
   const [criticality, setCriticality] = useState(1);
+  const [hosts, setHosts] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
-  const client = new ReportClient('http://localhost:8080', null, {});
+  const client = new ReportClient(process.env.GrpcEndpointUrl as string, null, {});
   const params = useParams();
   const navigate = useNavigate();
 
@@ -87,12 +95,15 @@ function EditApplication() {
   };
 
   const changeCriticality = (event: ChangeEvent<{value: number}>) => {
-    console.log(event.target.value);
     setCriticality(event.target.value);
   };
 
   const changeAppstatus = (event: ChangeEvent<{value: number}>) => {
     setAppstatus(event.target.value);
+  };
+
+  const changeHosts = (event: ChangeEvent<{value: string}>) => {
+    setHosts(event.target.value);
   };
 
   const handleSubmit = (event: Event) => {
@@ -103,6 +114,7 @@ function EditApplication() {
     request.setAppstatus(appstatus);
     request.setCriticalityid(criticality);
     request.setResponsiblepersonname(person);
+    request.setHostnameList(hosts.split(/\n/));
 
     client.updateApplication(
       request,
@@ -135,6 +147,7 @@ function EditApplication() {
         setCriticality(app?.getCriticalityid() as number);
         setPerson(app?.getResponsiblepersonname() as string);
         setAppstatus(app?.getAppstatus() as number);
+        setHosts(app?.getHostnameList().join('\n') as string);
         setLastUpdated(
           app
             ?.getLastupdated()
@@ -175,6 +188,10 @@ function EditApplication() {
             </option>
           ))}
         </CriticalityField>
+      </Seperator>
+      <Seperator>
+          <HostsLabel>Hosts: </HostsLabel>
+          <HostsField value={hosts} onChange={changeHosts} required />
       </Seperator>
       <Seperator>
         <LastUpdatedLabel>Last Updated:</LastUpdatedLabel>

@@ -1,6 +1,4 @@
 ---
-version: '3'
-
 include:
   - path: docker-compose.backend.yml
   - path: docker-compose.db.yml

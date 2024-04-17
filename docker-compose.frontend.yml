@@ -1,11 +1,7 @@
 ---
-version: '3'
-
 services:
   proxy:
-    build: 
-      context: ./proxy
-      dockerfile: Dockerfile
+    build: ./proxy
     image: proxy
     container_name: proxy
     restart: always
@@ -15,12 +11,12 @@ services:
       - app-network
       - api-network
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    build: ./frontend
     image: frontend
     container_name: frontend
     restart: always
+    environment:
+      - GrpcEndpointUrl=localhost:8080
     ports:
       - 3000:3000
     depends_on:
