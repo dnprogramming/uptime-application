@@ -34,11 +34,7 @@ const Apps = styled(ApplicationCard)`
 
 function ApplicationList() {
   const [monitorApps, setMonitorApps] = useState<ApplicationInformation[]>([]);
-  const client = new ReportClient(
-    'localhost:8080',
-    null,
-    {}
-  );
+  const client = new ReportClient('localhost:8080', null, {});
 
   const getApps = async () => {
     const request = new Empty();

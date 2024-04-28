@@ -191,8 +191,8 @@ function EditApplication() {
         </CriticalityField>
       </Seperator>
       <Seperator>
-          <HostsLabel>Hosts: </HostsLabel>
-          <HostsField value={hosts} onChange={changeHosts} required />
+        <HostsLabel>Hosts: </HostsLabel>
+        <HostsField value={hosts} onChange={changeHosts} required />
       </Seperator>
       <Seperator>
         <LastUpdatedLabel>Last Updated:</LastUpdatedLabel>

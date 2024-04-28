@@ -1,29 +1,9 @@
 {
+  "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "declaration": true,
-    "lib": ["es2018"],
-    "module": "commonjs",
-    "noEmitOnError": true,
-    "noImplicitReturns": true,
-    "pretty": true,
-    "sourceMap": true,
-    "target": "es2018",
     "rootDir": ".",
     "outDir": "build",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": false,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
