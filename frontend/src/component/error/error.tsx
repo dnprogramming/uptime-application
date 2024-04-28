@@ -15,11 +15,7 @@ const ErrorContainer = styled.div`
 `;
 
 const ErrorPage = () => {
-  return (
-    <>
-      <ErrorContainer>Sorry, but that page is not found.</ErrorContainer>
-    </>
-  );
+  return <ErrorContainer>Sorry, but that page is not found.</ErrorContainer>;
 };
 
 export default ErrorPage;
