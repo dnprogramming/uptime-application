@@ -83,7 +83,7 @@ function EditApplication() {
   const [criticality, setCriticality] = useState(1);
   const [hosts, setHosts] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
-  const client = new ReportClient('localhost:8080', null, {});
+  const client = new ReportClient('http://localhost:8080', null, {});
   const params = useParams();
   const navigate = useNavigate();
 
