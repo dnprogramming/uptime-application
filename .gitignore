@@ -199,7 +199,7 @@ ipch/
 *.e2e
 
 #Env Files
-*.env
+*.env*
 
 # TFS 2012 Local Workspace
 $tf/

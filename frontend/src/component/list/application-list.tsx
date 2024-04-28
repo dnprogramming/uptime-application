@@ -9,6 +9,7 @@ import {
   GetApplicationsResponse,
 } from '../../generated/report_pb';
 import {ReportClient} from '../../generated/ReportServiceClientPb';
+import ProxyHost from '../../utility/utility';
 
 const ApplicationListing = styled.div`
   display: grid;
@@ -34,7 +35,7 @@ const Apps = styled(ApplicationCard)`
 
 function ApplicationList() {
   const [monitorApps, setMonitorApps] = useState<ApplicationInformation[]>([]);
-  const client = new ReportClient('http://localhost:8080', null, {});
+  const client = new ReportClient(ProxyHost, null, {});
 
   const getApps = async () => {
     const request = new Empty();

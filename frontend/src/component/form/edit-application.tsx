@@ -10,6 +10,7 @@ import {
 } from '../../generated/report_pb';
 import {ReportClient} from '../../generated/ReportServiceClientPb';
 import {AppStatusOptions, CriticalityOptions} from '../../enum/criticalityEnum';
+import ProxyHost from '../../utility/utility';
 
 const EditApplicationForm = styled.form`
   display: flex;
@@ -83,7 +84,7 @@ function EditApplication() {
   const [criticality, setCriticality] = useState(1);
   const [hosts, setHosts] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
-  const client = new ReportClient('http://localhost:8080', null, {});
+  const client = new ReportClient(ProxyHost, null, {});
   const params = useParams();
   const navigate = useNavigate();
 

@@ -8,6 +8,7 @@ import {
   AddApplicationRequest,
   AddApplicationResponse,
 } from '../../generated/report_pb';
+import ProxyHost from '../../utility/utility';
 
 const AddApplicationForm = styled.form`
   display: flex;
@@ -64,7 +65,7 @@ function AddApplication() {
   const [person, setPerson] = useState('');
   const [criticality, setCriticality] = useState(1);
   const [hosts, setHosts] = useState('');
-  const client = new ReportClient('http://localhost:8080', null, {});
+  const client = new ReportClient(ProxyHost, null, {});
   const navigate = useNavigate();
 
   const changeAppname = (event: ChangeEvent<{value: string}>) => {
