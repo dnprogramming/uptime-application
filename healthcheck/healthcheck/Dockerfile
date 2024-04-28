@@ -1,9 +1,8 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/runtime:8.0-preview AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy-chiseled-extra AS base
 WORKDIR /app
+EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-preview AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["healthcheck/healthcheck.csproj", "healthcheck/"]
 RUN dotnet restore "healthcheck/healthcheck.csproj"
