@@ -1,5 +1,5 @@
 /**
- * @fileoverview gRPC-Web generated client stub for
+ * @fileoverview gRPC-Web generated client stub for 
  * @enhanceable
  * @public
  */
@@ -9,6 +9,7 @@
 // 	protoc-gen-grpc-web v1.5.0
 // 	protoc              v3.20.3
 // source: report.proto
+
 
 /* eslint-disable */
 // @ts-nocheck

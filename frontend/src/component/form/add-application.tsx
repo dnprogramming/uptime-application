@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {ChangeEvent, useState} from 'react';
 import styled from 'styled-components';
 import {CriticalityOptions} from '../../enum/criticalityEnum';
@@ -64,7 +65,7 @@ function AddApplication() {
   const [criticality, setCriticality] = useState(1);
   const [hosts, setHosts] = useState('');
   const client = new ReportClient(
-    process.env.GrpcEndpointUrl as string,
+    'localhost:8080',
     null,
     {}
   );

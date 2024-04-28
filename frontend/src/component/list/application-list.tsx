@@ -35,16 +35,10 @@ const Apps = styled(ApplicationCard)`
 function ApplicationList() {
   const [monitorApps, setMonitorApps] = useState<ApplicationInformation[]>([]);
   const client = new ReportClient(
-    process.env.GrpcEndpointUrl as string,
+    'localhost:8080',
     null,
     {}
   );
-
-  useEffect(() => {
-    const intervalId = setInterval(getApps, 500);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   const getApps = async () => {
     const request = new Empty();
@@ -59,6 +53,12 @@ function ApplicationList() {
       }
     );
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(getApps, 500);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <ApplicationListing>
