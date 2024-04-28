@@ -112,10 +112,10 @@ function EditApplication() {
     event.preventDefault();
     const request = new UpdateApplicationRequest();
     request.setAppid(appId);
-    request.setAppname(appname);
+    request.setAppname(btoa(appname));
     request.setAppstatus(appstatus);
     request.setCriticalityid(criticality);
-    request.setResponsiblepersonname(person);
+    request.setResponsiblepersonname(btoa(person));
     request.setHostnameList(hosts.split(/\n/));
 
     client.updateApplication(
@@ -145,9 +145,9 @@ function EditApplication() {
           navigate('/');
         }
         setAppid(appId);
-        setAppname(app?.getAppname() as string);
+        setAppname(atob(app?.getAppname() as string));
         setCriticality(app?.getCriticalityid() as number);
-        setPerson(app?.getResponsiblepersonname() as string);
+        setPerson(atob(app?.getResponsiblepersonname() as string));
         setAppstatus(app?.getAppstatus() as number);
         setHosts(app?.getHostnameList().join('\n') as string);
         setLastUpdated(

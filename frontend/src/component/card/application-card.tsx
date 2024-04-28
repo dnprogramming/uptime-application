@@ -48,12 +48,12 @@ const Updated = styled.div`
 `;
 
 function ApplicationCard({app}: {app: ApplicationInformation}) {
-  const appName = app.getAppname();
+  const appName = atob(app.getAppname());
   const appStatus = app.getAppstatus();
   const criticalityLevel = app.getCriticalitylevel();
   const lastUpdated = app.getLastupdated();
   const updated = lastUpdated?.toDate().toLocaleString().replace(',', ' at');
-  const responsible = app.getResponsiblepersonname();
+  const responsible = atob(app.getResponsiblepersonname());
   const appId = app.getAppid();
   const link = '/edit/' + appId;
   return (

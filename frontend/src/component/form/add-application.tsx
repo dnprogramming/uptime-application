@@ -87,9 +87,9 @@ function AddApplication() {
   const handleSubmit = (event: SubmitEvent) => {
     event.preventDefault();
     const addApplicationReq = new AddApplicationRequest();
-    addApplicationReq.setAppname(appname);
+    addApplicationReq.setAppname(btoa(appname));
     addApplicationReq.setCriticalityid(criticality);
-    addApplicationReq.setResponsiblepersonname(person);
+    addApplicationReq.setResponsiblepersonname(btoa(person));
     addApplicationReq.setHostnameList(hosts.split(/\n/));
 
     client.addApplication(
