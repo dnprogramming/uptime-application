@@ -28,6 +28,16 @@ const ApplicationListing = styled.div`
   }
 `;
 
+const ConnectionErrorWarning = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: calc(2rem + 2vmin);
+  line-height: 10dvw;
+`;
+
 const Apps = styled(ApplicationCard)`
   max-width: 20vw;
   max-height: 10vh;
@@ -35,6 +45,7 @@ const Apps = styled(ApplicationCard)`
 
 function ApplicationList() {
   const [monitorApps, setMonitorApps] = useState<ApplicationInformation[]>([]);
+  const [connectionError, setConnectionError] = useState(false);
   const client = new ReportClient(ProxyHost, null, {});
 
   const getApps = async () => {
@@ -43,9 +54,16 @@ function ApplicationList() {
       request,
       {},
       (err: any, res: GetApplicationsResponse) => {
-        const monitoredApplications = res.getAppsList();
-        if (monitoredApplications.length > -1) {
-          setMonitorApps(monitoredApplications);
+        if (res) {
+          const monitoredApplications = res.getAppsList();
+          if (monitoredApplications.length > -1) {
+            setMonitorApps(monitoredApplications);
+          }
+          if (connectionError) {
+            setConnectionError(false);
+          }
+        } else {
+          setConnectionError(true);
         }
       }
     );
@@ -58,11 +76,21 @@ function ApplicationList() {
   }, []);
 
   return (
-    <ApplicationListing>
-      {monitorApps.length === 0 && <p>No Apps Found</p>}
-      {monitorApps.length > 0 &&
-        monitorApps.map(app => <Apps key={app.getAppid()} app={app} />)}
-    </ApplicationListing>
+    <>
+      {connectionError && (
+        <ConnectionErrorWarning>
+          There is currently an issue in the connection between the Web
+          Application and the API
+        </ConnectionErrorWarning>
+      )}
+      {!connectionError && (
+        <ApplicationListing>
+          {!connectionError && monitorApps.length === 0 && <p>No Apps Found</p>}
+          {monitorApps.length > 0 &&
+            monitorApps.map(app => <Apps key={app.getAppid()} app={app} />)}
+        </ApplicationListing>
+      )}
+    </>
   );
 }
 
