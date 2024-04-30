@@ -2,5 +2,7 @@ FROM envoyproxy/envoy:v1.30-latest
 
 COPY envoy.yml /etc/envoy/envoy.yaml
 
+EXPOSE 5000
+
 ENTRYPOINT [ "/usr/local/bin/envoy" ]
 CMD [ "-c /etc/envoy/envoy.yaml", "-l trace", "--log-path /tmp/envoy_info.log" ]
