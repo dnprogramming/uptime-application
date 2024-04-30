@@ -17,7 +17,11 @@ public static class Connections
         string? RedisHostName = Environment.GetEnvironmentVariable("RedisHostName");
         string? RedisPortNumber = Environment.GetEnvironmentVariable("RedisPortNumber");
         string? RedisPassword = Environment.GetEnvironmentVariable("RedisPassword");
-        string redisConnString = $"{RedisHostName}:{RedisPortNumber},password={RedisPassword}";
+        string redisConnString;
+        if (!string.IsNullOrWhiteSpace(RedisPassword))
+            redisConnString = $"{RedisHostName}:{RedisPortNumber},password={RedisPassword}";
+        else
+            redisConnString = $"{RedisHostName}:{RedisPortNumber}";
         return redisConnString;
     }
     private static string GenerateSecuredRedisConnectionString()
@@ -25,7 +29,11 @@ public static class Connections
         string? RedisHostName = Environment.GetEnvironmentVariable("SecuredRedisHostName");
         string? RedisPortNumber = Environment.GetEnvironmentVariable("SecuredRedisPortNumber");
         string? RedisPassword = Environment.GetEnvironmentVariable("SecuredRedisPassword");
-        string redisConnString = $"{RedisHostName}:{RedisPortNumber},password={RedisPassword}";
+        string redisConnString;
+        if (!string.IsNullOrWhiteSpace(RedisPassword))
+            redisConnString = $"{RedisHostName}:{RedisPortNumber},password={RedisPassword}";
+        else
+            redisConnString = $"{RedisHostName}:{RedisPortNumber}";
         return redisConnString;
     }
 
