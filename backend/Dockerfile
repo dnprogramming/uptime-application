@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy-chiseled-extra AS base
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 9080
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
