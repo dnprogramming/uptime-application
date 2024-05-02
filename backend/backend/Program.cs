@@ -1,4 +1,6 @@
-﻿string sqlConn = Connections.SQLConnectionString();
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+string sqlConn = Connections.SQLConnectionString();
 string redisConn = Connections.RedisConnectionString();
 string securedRedisConn = Connections.SecuredRedisConnectionString();
 
@@ -83,11 +85,14 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
             .AllowAnyHeader()
             .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
 }));
+builder.Services.AddGrpcHealthChecks()
+                .AddCheck("Sample", () => HealthCheckResult.Healthy());
 
 var app = builder.Build();
 
 app.UseCors();
 app.MapGrpcService<ReportService>().RequireCors("AllowAll");
+app.MapGrpcHealthChecksService();
 
 if (!app.Environment.IsProduction())
 {

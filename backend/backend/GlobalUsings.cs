@@ -15,6 +15,7 @@ global using Microsoft.Data.SqlClient;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Caching.Distributed;
 global using Microsoft.Extensions.Caching.StackExchangeRedis;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Newtonsoft.Json;
 global using Serilog;
 global using Serilog.Events;
