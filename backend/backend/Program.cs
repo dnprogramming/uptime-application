@@ -29,13 +29,7 @@ var EventLevel = LogEventLevel.Error;
 if (!builder.Environment.IsProduction()) EventLevel = LogEventLevel.Information;
 
 var log = new LoggerConfiguration()
-          .WriteTo.File(
-            $"logs{Path.DirectorySeparatorChar}log.log",
-            rollingInterval: RollingInterval.Day,
-            retainedFileCountLimit: 21,
-            restrictedToMinimumLevel: EventLevel
-
-          )
+          .WriteTo.Console()
         .CreateLogger();
 
 if (!builder.Environment.IsProduction())
