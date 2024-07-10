@@ -22,7 +22,7 @@
     <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Serilog" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="8.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="8.0.7" />
     <PackageReference Include="Dapper" Version="2.1.44" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
