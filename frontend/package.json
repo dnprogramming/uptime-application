@@ -18,7 +18,7 @@
     "react-router-dom": "^6.25.1",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.12",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "web-vitals": "^4.2.2"
   },
   "scripts": {
@@ -59,6 +59,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "gts": "^5.3.1",
-    "typescript": "~5.5.3"
+    "typescript": "~5.5.4"
   }
 }
