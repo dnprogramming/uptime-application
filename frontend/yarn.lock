@@ -5226,10 +5226,10 @@ grpc-web@^1.5.0:
   resolved "https://registry.yarnpkg.com/grpc-web/-/grpc-web-1.5.0.tgz#154e4007ab59a94bf7726b87ef6c5bd8815ecf6e"
   integrity sha512-y1tS3BBIoiVSzKTDF3Hm7E8hV2n7YY7pO0Uo7depfWJqKzWE+SKr0jvHNIJsJJYILQlpYShpi/DRJJMbosgDMQ==
 
-gts@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/gts/-/gts-6.0.0.tgz#e254436b216728ca7074261ea00acfec11a19b34"
-  integrity sha512-wTZZYGwa67j88rEzW8nyshxHJKNk8ytGjYHu+Y1uC/B+oMTEqMNXikULzQfc5/BcmtVQ/FWurj84Q/WWS6Wd3g==
+gts@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/gts/-/gts-6.0.1.tgz#bd0d8fce9cfbd0d7537059e05ff980aff8de6fce"
+  integrity sha512-OizBdT0af8EzAh4F+XqLRa7ie6cGonN+Ip+dE9cz+24OyMdp+GQC739h3hVJWFVWcBsQCMMuHsQz9t1eWK795Q==
   dependencies:
     "@typescript-eslint/eslint-plugin" "5.62.0"
     "@typescript-eslint/parser" "5.62.0"
