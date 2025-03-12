@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.70.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.3" />
     <PackageReference Include="Elastic.CommonSchema.Serilog" Version="8.12.3" />
     <PackageReference Include="Elastic.Apm.SerilogEnricher" Version="8.12.3" />
     <PackageReference Include="Serilog.Formatting.Elasticsearch" Version="10.0.0" />
