@@ -1,6 +1,7 @@
 ---
 services:
   backend:
+    platform: linux/x86_64
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -29,7 +30,3 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - api-network
-      - db-network
-      - security-network

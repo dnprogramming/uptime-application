@@ -10,13 +10,3 @@ volumes:
   redis-config:
   sec-redis:
   sec-redis-config:
-  
-networks:
-  api-network:
-    driver: bridge
-  app-network:
-    driver: bridge
-  db-network:
-    driver: bridge
-  security-network:
-    driver: bridge

@@ -2,22 +2,22 @@
 services:  
   db:
     platform: linux/x86_64
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
       - 1433:1433
     environment:
       MSSQL_SA_PASSWORD: DevCharlie4
       ACCEPT_EULA: "Y"
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S . -U sa -P DevCharlie4"]
-      interval: 1s
-      timeout: 5s
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P DevCharlie4 -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
       retries: 120
+      start_period: 10s
+      timeout: 3s
     restart: always
-    networks:
-      - db-network
   
   flyway:
+    platform: linux/x86_64
     image: flyway/flyway
     command: migrate -url="jdbc:sqlserver://db;databaseName=master;encrypt=false;trustServerCertificate=true" -user="sa" -password="DevCharlie4" -mixed=true -placeholders.database_user_password="Test2Alpha212!" -placeholders.asymmetric_password="Test2Alpha1234!" -placeholders.master_key_password="U#IEVx95zX7nXhKvJn6"
     volumes:
@@ -25,8 +25,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    networks:
-      - db-network
 
   redis:
     image: redis:latest
@@ -47,8 +45,6 @@ services:
       interval: 1s
       timeout: 3s
       retries: 30
-    networks:
-      - db-network
 
   sec-redis:
     image: redis:latest
@@ -64,5 +60,3 @@ services:
       - sec-redis-config:/usr/local/etc/redis/redis.conf
     ports:
       - 10500:10500
-    networks:
-      - security-network

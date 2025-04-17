@@ -9,9 +9,9 @@ services:
     restart: always
     ports:
       - 8080:8080
-    networks:
-      - app-network
-      - api-network
+      - 9901:9901
+    depends_on:
+      - backend
   frontend:
     build:
       context: ./frontend
@@ -26,5 +26,3 @@ services:
     depends_on:
       - backend
       - proxy
-    networks:
-      - app-network
