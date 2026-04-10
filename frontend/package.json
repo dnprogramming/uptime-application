@@ -17,7 +17,7 @@
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.14.0",
     "react-scripts": "5.0.1",
-    "styled-components": "^6.3.12",
+    "styled-components": "^6.4.0",
     "typescript": "^5.9.3",
     "web-vitals": "^5.2.0"
   },
